@@ -8,8 +8,8 @@ namespace BistroBook.Model
         public int MenuID { get; set; }
 
         [Required]
-        [Range(0.0, double.MaxValue)]
-        public decimal Price { get; set; }
+        //[Range(0.0, double.MaxValue)]
+        public int Price { get; set; }
 
         [Required]
         [StringLength(50, MinimumLength = 1)]

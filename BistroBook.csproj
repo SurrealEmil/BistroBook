@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
       <PrivateAssets>all</PrivateAssets>
@@ -21,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Date\Repositorys\IRepositorys\" />
+    <Folder Include="Date\Repositories\IRepositories\" />
     <Folder Include="Model\DTOs\" />
     <Folder Include="Services\IServices\" />
   </ItemGroup>
