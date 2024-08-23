@@ -1,0 +1,6 @@
+@BistroBook_HostAddress = http://localhost:5033
+
+GET {{BistroBook_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
