@@ -5,11 +5,11 @@ namespace BistroBook.Model
     public class Customer
     {
         [Key]
-        public int CustomerID { get; set; }
+        public int CustomerId { get; set; }
 
         [Required]
-        [StringLength(15, MinimumLength = 7)]
-        public int PhoneNumber { get; set; }
+        [StringLength(20, MinimumLength = 7)]
+        public string PhoneNumber { get; set; }
 
         [Required]
         [StringLength(50, MinimumLength = 1)]

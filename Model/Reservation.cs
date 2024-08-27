@@ -6,7 +6,7 @@ namespace BistroBook.Model
     public class Reservation
     {
         [Key]
-        public int ReservationID { get; set; }
+        public int ReservationId { get; set; }
 
         [Required]
         public int GuestCount { get; set; }

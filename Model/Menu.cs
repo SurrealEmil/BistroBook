@@ -5,7 +5,7 @@ namespace BistroBook.Model
     public class Menu
     {
         [Key]
-        public int MenuID { get; set; }
+        public int MenuId { get; set; }
 
         [Required]
         //[Range(0.0, double.MaxValue)]
@@ -15,6 +15,6 @@ namespace BistroBook.Model
         [StringLength(50, MinimumLength = 1)]
         public string DishName { get; set; }
 
-        public bool Available { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }
