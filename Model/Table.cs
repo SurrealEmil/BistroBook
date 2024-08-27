@@ -5,7 +5,7 @@ namespace BistroBook.Model
     public class Table
     {
         [Key]
-        public int TableID { get; set; }
+        public int TableId { get; set; }
 
         [Required]
         [Range(1, 100)]
