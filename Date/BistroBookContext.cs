@@ -32,6 +32,15 @@ namespace BistroBook.Date
                     new Customer { CustomerId = 4, FirstName = "Ida", LastName = "Lundberg", Email = "Ida.Lundberg@gmail.com", PhoneNumber = "0727022884" },
                     new Customer { CustomerId = 5, FirstName = "Julia", LastName = "Levenhagen", Email = "Julia.Levenhagen@gmail.com", PhoneNumber = "0727022885" }
                 );
+
+            modelBuilder.Entity<Table>().HasData
+                (
+                    new Table { TableId = 1, TableNumber = 1, SeatCount = 4 },
+                    new Table { TableId = 2, TableNumber = 2, SeatCount = 6 },
+                    new Table { TableId = 3, TableNumber = 3, SeatCount = 2 },
+                    new Table { TableId = 4, TableNumber = 4, SeatCount = 8 },
+                    new Table { TableId = 5, TableNumber = 5, SeatCount = 5 }
+                );
         }
     }
 }

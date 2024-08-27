@@ -12,6 +12,7 @@ namespace BistroBook.Date.Repositories
         {
             _context = context;
         }
+
         public async Task AddCustomerAsync(Customer customer)
         {
             await _context.Customers.AddAsync(customer);
@@ -25,9 +26,7 @@ namespace BistroBook.Date.Repositories
             {
                 _context.Customers.Remove(customer);
             }
-
             await _context.SaveChangesAsync();
-
         }
 
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
