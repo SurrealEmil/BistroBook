@@ -41,6 +41,15 @@ namespace BistroBook.Date
                     new Table { TableId = 4, TableNumber = 4, SeatCount = 8 },
                     new Table { TableId = 5, TableNumber = 5, SeatCount = 5 }
                 );
+
+            modelBuilder.Entity<Menu>().HasData
+                (
+                    new Menu { MenuId = 1, DishName = "Swedish Meatballs", Description = "Tender meatballs served with creamy mashed potatoes, lingonberry sauce, and gravy.", Price = 120, IsAvailable = true },
+                    new Menu { MenuId = 2, DishName = "Grilled Salmon Fillet", Description = "Fresh salmon fillet grilled to perfection, served with dill sauce and roasted vegetables.", Price = 180, IsAvailable = true },
+                    new Menu { MenuId = 3, DishName = "Creamy Mushroom Pasta", Description = "Tagliatelle pasta tossed in a creamy mushroom sauce with a hint of garlic and Parmesan.", Price = 140, IsAvailable = true },
+                    new Menu { MenuId = 4, DishName = "Crispy Chicken Salad", Description = "Crisp chicken strips served on a bed of mixed greens, cherry tomatoes, cucumbers, and honey mustard dressing.", Price = 99, IsAvailable = true },
+                    new Menu { MenuId = 5, DishName = "Shrimp Skagen", Description = "A classic Swedish shrimp salad mixed with mayonnaise, dill, and lemon, served on toast.", Price = 115, IsAvailable = false }
+                );
         }
     }
 }

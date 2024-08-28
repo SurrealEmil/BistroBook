@@ -15,6 +15,10 @@ namespace BistroBook.Model
         [StringLength(50, MinimumLength = 1)]
         public string DishName { get; set; }
 
+        [Required]
+        [StringLength(200, MinimumLength = 10)]
+        public string Description { get; set; }
+
         public bool IsAvailable { get; set; }
     }
 }
