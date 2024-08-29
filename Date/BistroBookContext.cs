@@ -20,9 +20,9 @@ namespace BistroBook.Date
             base.OnModelCreating(modelBuilder);
 
             // Define a unique index on the combination of TableID, Date, and Time
-            modelBuilder.Entity<Reservation>()
-                .HasIndex(r => new { r.FK_TableID, r.Date, r.Time })
-                .IsUnique();
+            //modelBuilder.Entity<Reservation>()
+            //    .HasIndex(r => new { r.FK_TableId, r.Date, r.Time })
+            //    .IsUnique();
 
             modelBuilder.Entity<Customer>().HasData
                 (
@@ -50,6 +50,35 @@ namespace BistroBook.Date
                     new Menu { MenuId = 4, DishName = "Crispy Chicken Salad", Description = "Crisp chicken strips served on a bed of mixed greens, cherry tomatoes, cucumbers, and honey mustard dressing.", Price = 99, IsAvailable = true },
                     new Menu { MenuId = 5, DishName = "Shrimp Skagen", Description = "A classic Swedish shrimp salad mixed with mayonnaise, dill, and lemon, served on toast.", Price = 115, IsAvailable = false }
                 );
+
+            modelBuilder.Entity<Reservation>().HasData(
+                new Reservation
+                {
+                    ReservationId = 1,
+                    FK_CustomerId = 1,
+                    FK_TableId = 1,
+                    Date = new DateTime(2024, 8, 29),
+                    StartTime = new TimeSpan(18, 0, 0),  // 6:00 PM
+                    EndTime = new TimeSpan(19, 0, 0),    // 7:00 PM
+                    GuestCount = 2,
+                    Status = ReservationStatus.Confirmed, // Assuming you have a ReservationStatus enum
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                },
+                new Reservation
+                {
+                    ReservationId = 2,
+                    FK_CustomerId = 2,
+                    FK_TableId = 2,
+                    Date = new DateTime(2024, 8, 30),
+                    StartTime = new TimeSpan(20, 0, 0),  // 8:00 PM
+                    EndTime = new TimeSpan(21, 0, 0),   // 9:00 PM
+                    GuestCount = 2,
+                    Status = ReservationStatus.Pending,   // Assuming you have a ReservationStatus enum
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                }
+    );
         }
     }
 }

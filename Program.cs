@@ -27,6 +27,9 @@ builder.Services.AddScoped<ITableService, TableService>();
 builder.Services.AddScoped<IMenuRepository, MenuRepository>();
 builder.Services.AddScoped<IMenuService, MenuService>();
 
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
