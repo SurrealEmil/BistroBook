@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace BistroBook.Model.DTOs.ReservationDTOs
 {
@@ -11,6 +12,7 @@ namespace BistroBook.Model.DTOs.ReservationDTOs
         public int CustomerId { get; set; }
 
         [Required]
+        [Range(1, 100, ErrorMessage = "Guest count must be between 1 and 100.")]
         public int GuestCount { get; set; }
 
         [Required]

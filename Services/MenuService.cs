@@ -14,6 +14,7 @@ namespace BistroBook.Services
             _menuRepository = menuRepository;
         }
 
+        // Add a new dish
         public async Task AddDishAsync(MenuCreateDto menu)
         {
             var newMenuItem = new Menu
@@ -26,11 +27,19 @@ namespace BistroBook.Services
             await _menuRepository.AddDishAsync(newMenuItem);
         }
 
+        // Delete a dish by its ID
         public async Task DeleteDishAsync(int menuId)
         {
-            await _menuRepository.DeleteDishAsync(menuId);
+            var menu = await _menuRepository.GetDishByIdAsync(menuId);
+            if (menu == null)
+            {
+                throw new InvalidOperationException("Dish was not found.");
+            }
+
+            await _menuRepository.DeleteDishAsync(menu);
         }
 
+        // Get all dishes and map to summary DTOs
         public async Task<IEnumerable<MenuSummaryDto>> GetAllMenuDishesAsync()
         {
             var menuList = await _menuRepository.GetAllMenuDishesAsync();
@@ -43,6 +52,7 @@ namespace BistroBook.Services
             }).ToList();
         }
 
+        // Get a dish by its ID and map to detail DTO
         public async Task<MenuDetailDto> GetDishByIdAsync(int menuId)
         {
             var menu = await _menuRepository.GetDishByIdAsync(menuId);
@@ -61,15 +71,20 @@ namespace BistroBook.Services
             };
         }
 
+        // Update an existing dish by its ID
         public async Task UpdateMenuAsync(int menuId, MenuUpdateDto menu)
         {
             var updateMenu = await _menuRepository.GetDishByIdAsync(menuId);
+            if (updateMenu == null)
             {
-                updateMenu.DishName = menu.DishName;
-                updateMenu.Description = menu.Description;
-                updateMenu.Price = menu.Price;
-                updateMenu.IsAvailable = menu.IsAvailable;
+                throw new InvalidOperationException("Dish was not found.");
             }
+            updateMenu.DishName = menu.DishName;
+            updateMenu.Description = menu.Description;
+            updateMenu.Price = menu.Price;
+            updateMenu.IsAvailable = menu.IsAvailable;
+
+            await _menuRepository.UpdateMenuAsync(updateMenu);
         }
     }
 }

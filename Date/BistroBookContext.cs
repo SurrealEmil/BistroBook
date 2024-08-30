@@ -26,11 +26,11 @@ namespace BistroBook.Date
 
             modelBuilder.Entity<Customer>().HasData
                 (
-                    new Customer { CustomerId = 1, FirstName = "Emil", LastName = "Ejderklev", Email = "Emil.Ejderklev@gmail.com", PhoneNumber = "0727022881"},
-                    new Customer { CustomerId = 2, FirstName = "Johan", LastName = "Anderson", Email = "Johan.Anderson@gmail.com", PhoneNumber = "0727022882" },
-                    new Customer { CustomerId = 3, FirstName = "Anton", LastName = "StenBerg", Email = "Anton.StenBerg@gmail.com", PhoneNumber = "0727022883" },
-                    new Customer { CustomerId = 4, FirstName = "Ida", LastName = "Lundberg", Email = "Ida.Lundberg@gmail.com", PhoneNumber = "0727022884" },
-                    new Customer { CustomerId = 5, FirstName = "Julia", LastName = "Levenhagen", Email = "Julia.Levenhagen@gmail.com", PhoneNumber = "0727022885" }
+                    new Customer { CustomerId = 1, FirstName = "Jan", LastName = "Eriksson", Email = "Jan.Eriksson@gmail.com", PhoneNumber = "0701234567"},
+                    new Customer { CustomerId = 2, FirstName = "Johan", LastName = "Anderson", Email = "Johan.Anderson@gmail.com", PhoneNumber = "0702345678" },
+                    new Customer { CustomerId = 3, FirstName = "Anton", LastName = "StenBerg", Email = "Anton.StenBerg@gmail.com", PhoneNumber = "0703456789" },
+                    new Customer { CustomerId = 4, FirstName = "Ida", LastName = "Lundberg", Email = "Ida.Lundberg@gmail.com", PhoneNumber = "0704567890" },
+                    new Customer { CustomerId = 5, FirstName = "Julia", LastName = "Levenhagen", Email = "Julia.Levenhagen@gmail.com", PhoneNumber = "0705678901" }
                 );
 
             modelBuilder.Entity<Table>().HasData
@@ -58,12 +58,9 @@ namespace BistroBook.Date
                     FK_CustomerId = 1,
                     FK_TableId = 1,
                     Date = new DateTime(2024, 8, 29),
-                    StartTime = new TimeSpan(18, 0, 0),  // 6:00 PM
-                    EndTime = new TimeSpan(19, 0, 0),    // 7:00 PM
-                    GuestCount = 2,
-                    Status = ReservationStatus.Confirmed, // Assuming you have a ReservationStatus enum
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
+                    StartTime = new TimeSpan(18, 0, 0),
+                    EndTime = new TimeSpan(19, 0, 0),
+                    GuestCount = 2
                 },
                 new Reservation
                 {
@@ -71,12 +68,9 @@ namespace BistroBook.Date
                     FK_CustomerId = 2,
                     FK_TableId = 2,
                     Date = new DateTime(2024, 8, 30),
-                    StartTime = new TimeSpan(20, 0, 0),  // 8:00 PM
-                    EndTime = new TimeSpan(21, 0, 0),   // 9:00 PM
-                    GuestCount = 2,
-                    Status = ReservationStatus.Pending,   // Assuming you have a ReservationStatus enum
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
+                    StartTime = new TimeSpan(20, 0, 0),
+                    EndTime = new TimeSpan(21, 0, 0),
+                    GuestCount = 2
                 }
     );
         }

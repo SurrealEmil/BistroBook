@@ -13,34 +13,35 @@ namespace BistroBook.Date.Repositories
             _context = contest;
         }
 
+        // Add a new customer
         public async Task AddDishAsync(Menu menu)
         {
             await _context.Menus.AddAsync(menu);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteDishAsync(int menuId)
+        // Delete a dish by its ID
+        public async Task DeleteDishAsync(Menu menu)
         {
-            var menu = await _context.Menus.FindAsync(menuId);
-            if (menu != null)
-            {
-                _context.Menus.Remove(menu);
-            }
+            _context.Menus.Remove(menu);
             await _context.SaveChangesAsync();
         }
 
+        // Get all dishes
         public async Task<IEnumerable<Menu>> GetAllMenuDishesAsync()
         {
             var menuList = await _context.Menus.ToListAsync();
             return menuList;
         }
 
+        // Get a dish by its ID
         public async Task<Menu> GetDishByIdAsync(int menuId)
         {
             var menu = await _context.Menus.FindAsync(menuId);
             return menu;
         }
 
+        // Update a customer by its ID
         public async Task UpdateMenuAsync(Menu menu)
         {
             _context.Menus.Update(menu);

@@ -4,10 +4,17 @@ namespace BistroBook.Date.Repositories.IRepositories
 {
     public interface ICustomerRepository
     {
-        Task<IEnumerable<Customer>> GetAllCustomersAsync();
-        Task<Customer> GetCustomerByIdAsync(int customerId);
+        // Create a new customer
         Task AddCustomerAsync(Customer customer);
+
+        // Read operations
+        Task<Customer> GetCustomerByIdAsync(int customerId);
+        Task<IEnumerable<Customer>> GetAllCustomersAsync();
+
+        // Update an existing customer
         Task UpdateCustomerAsync(Customer customer);
-        Task DeleteCustomerAsync(int customerId);
+
+        // Delete a customer
+        Task DeleteCustomerAsync(Customer customer);
     }
 }

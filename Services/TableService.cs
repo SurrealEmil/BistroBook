@@ -1,4 +1,5 @@
-﻿using BistroBook.Date.Repositories.IRepositories;
+﻿using BistroBook.Date.Repositories;
+using BistroBook.Date.Repositories.IRepositories;
 using BistroBook.Model;
 using BistroBook.Model.DTOs.TableDTOs;
 using BistroBook.Services.IServices;
@@ -14,6 +15,7 @@ namespace BistroBook.Services
             _tableRepository = tableRepository;
         }
 
+        // Add a new table
         public async Task AddTableAsync(TableCreateDto table)
         {
             var newTable = new Table
@@ -24,11 +26,18 @@ namespace BistroBook.Services
             await _tableRepository.AddTableAsync(newTable);
         }
 
+        // Delete a table by its ID
         public async Task DeleteTableAsync(int tableId)
         {
-            await _tableRepository.DeleteTableAsync(tableId);
+            var table = await _tableRepository.GetTableByIdAsync(tableId);
+            if (table == null)
+            {
+                throw new InvalidOperationException("Table was not found.");
+            }
+            await _tableRepository.DeleteTableAsync(table);
         }
 
+        // Get all tables and map to summary DTOs
         public async Task<IEnumerable<TableSummaryDto>> GetAllTablesAsync()
         {
             var tableList = await _tableRepository.GetAllTablesAsync();
@@ -40,6 +49,7 @@ namespace BistroBook.Services
             }).ToList();
         }
 
+        // Get a table by its ID and map to detail DTO
         public async Task<TableDetailDto> GetTableByIdAsync(int tableId)
         {
             var table = await _tableRepository.GetTableByIdAsync(tableId);
@@ -56,13 +66,18 @@ namespace BistroBook.Services
             };
         }
 
+        // Update an existing table by its ID
         public async Task UpdateTableAsync(int tableId, TableUpdateDto table)
         {
             var updateTable = await _tableRepository.GetTableByIdAsync(tableId);
+            if (updateTable == null)
             {
-                updateTable.TableNumber = table.TableNumber;
-                updateTable.SeatCount = table.SeatCount;
-            };
+                throw new InvalidOperationException("Table was not found.");
+            }
+
+            updateTable.TableNumber = table.TableNumber;
+            updateTable.SeatCount = table.SeatCount;
+            
             await _tableRepository.UpdateTableAsync(updateTable);
         }
     }

@@ -5,6 +5,7 @@ using BistroBook.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using BistroBook.Model.DTOs.MenuDTOs;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BistroBook.Controllers
 {
@@ -19,44 +20,82 @@ namespace BistroBook.Controllers
             _menuService = menuService;
         }
 
+        // Get /api/Menus/GetAllMenuDishes
         [HttpGet]
         [Route("GetAllMenuDishes")]
         public async Task<ActionResult<IEnumerable<Menu>>> GetAllMenuDishes()
         {
             var menuList = await _menuService.GetAllMenuDishesAsync();
+
+            if (menuList.IsNullOrEmpty())
+            {
+                return StatusCode(404, "No dish found.");
+            }
+
             return Ok(menuList);
         }
 
+        //Get /api/Menus/GetDishById/{id}
         [HttpGet]
-        [Route("GetDishById/{menuId}")]
-        public async Task<ActionResult<Menu>> GetDishById(int menuId)
+        [Route("GetDishById/{id}")]
+        public async Task<ActionResult<Menu>> GetDishById(int id)
         {
-            var menu = await _menuService.GetDishByIdAsync(menuId);
+            var menu = await _menuService.GetDishByIdAsync(id);
+
+            if (menu == null)
+            {
+                return StatusCode(404, "No matching dish found.");
+            }
+
             return Ok(menu);
         }
 
+        // Post /api/Menus/AddDish
         [HttpPost]
         [Route("AddDish")]
         public async Task<ActionResult> AddDish([FromBody] MenuCreateDto menu)
         {
-            await _menuService.AddDishAsync(menu);
-            return Ok();
+            try
+            {
+                await _menuService.AddDishAsync(menu);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok("Dish added successfully.");
         }
 
+        // Put /api/Menus/UpdateMenu/{id}
         [HttpPut]
-        [Route("UpdateMenu/{menuId}")]
-        public async Task<ActionResult> UpdateMenu(int menuId, [FromBody] MenuUpdateDto menu)
+        [Route("UpdateMenu/{id}")]
+        public async Task<ActionResult> UpdateMenu(int id, [FromBody] MenuUpdateDto menu)
         {
-            await _menuService.UpdateMenuAsync(menuId, menu);
-            return Ok();
+            try
+            {
+                await _menuService.UpdateMenuAsync(id, menu);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok("Menu updated successfully.");
         }
 
+        // Delete /api/Menus/DeleteDish/{id}
         [HttpDelete]
-        [Route("DeleteDish/{menuId}")]
-        public async Task<ActionResult<Menu>> DeleteDish([FromBody] int menuId)
+        [Route("DeleteDish/{id}")]
+        public async Task<ActionResult<Menu>> DeleteDish(int id)
         {
-            await _menuService.DeleteDishAsync(menuId);
-            return Ok();
+            try
+            {
+                await _menuService.DeleteDishAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok("Dish deleted successfully.");
         }
     }
 }
