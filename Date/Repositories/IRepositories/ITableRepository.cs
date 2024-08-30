@@ -4,10 +4,17 @@ namespace BistroBook.Date.Repositories.IRepositories
 {
     public interface ITableRepository
     {
-        Task<IEnumerable<Table>> GetAllTablesAsync();
-        Task<Table> GetTableByIdAsync(int tableId);
+        // Create a new table
         Task AddTableAsync(Table table);
+
+        // Read operations
+        Task<Table> GetTableByIdAsync(int tableId);
+        Task<IEnumerable<Table>> GetAllTablesAsync();
+
+        // Update an existing table
         Task UpdateTableAsync(Table table);
-        Task DeleteTableAsync(int tableId);
+
+        // Delete a table
+        Task DeleteTableAsync(Table table);
     }
 }

@@ -14,6 +14,7 @@ namespace BistroBook.Services
             _customerRepository = customerRepository;
         }
 
+        // Add a new customer
         public async Task AddCustomerAsync(CustomerCreateDto customer)
         {
             var newCustomer = new Customer
@@ -26,11 +27,18 @@ namespace BistroBook.Services
             await _customerRepository.AddCustomerAsync(newCustomer);
         }
 
+        // Delete a customer by its ID
         public async Task DeleteCustomerAsync(int customerId)
         {
-            await _customerRepository.DeleteCustomerAsync(customerId);
+            var customer = await _customerRepository.GetCustomerByIdAsync(customerId);
+            if (customer == null)
+            {
+                throw new InvalidOperationException("Customer was not found.");
+            }
+            await _customerRepository.DeleteCustomerAsync(customer);
         }
 
+        // Get all customers and map to summary DTOs
         public async Task<IEnumerable<CustomerSummaryDto>> GetAllCustomersAsync()
         {
             var customerList = await _customerRepository.GetAllCustomersAsync();
@@ -42,6 +50,7 @@ namespace BistroBook.Services
             }).ToList();
         }
 
+        // Get a customer by its ID and map to detail DTO
         public async Task<CustomerDetailDto> GetCustomerByIdAsync(int customerId)
         {
             var customer = await _customerRepository.GetCustomerByIdAsync(customerId);
@@ -60,15 +69,20 @@ namespace BistroBook.Services
             };
         }
 
+        // Update an existing customer by its ID
         public async Task UpdateCustomerAsync(int customerId, CustomerUpdateDto customer)
         {
             var updateCustomer = await _customerRepository.GetCustomerByIdAsync(customerId);
+            if (updateCustomer == null)
             {
-                updateCustomer.FirstName = customer.FirstName;
-                updateCustomer.LastName = customer.LastName;
-                updateCustomer.Email = customer.Email;
-                updateCustomer.PhoneNumber = customer.PhoneNumber;
-            };
+                throw new InvalidOperationException("Customer was not found.");
+            }
+            
+            updateCustomer.FirstName = customer.FirstName;
+            updateCustomer.LastName = customer.LastName;
+            updateCustomer.Email = customer.Email;
+            updateCustomer.PhoneNumber = customer.PhoneNumber;
+            
             await _customerRepository.UpdateCustomerAsync(updateCustomer);
         }
     }

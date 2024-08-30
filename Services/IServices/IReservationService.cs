@@ -4,14 +4,20 @@ namespace BistroBook.Services.IServices
 {
     public interface IReservationService
     {
-        Task<IEnumerable<ReservationSummaryDto>> GetAllReservationsAsync();
-        Task<ReservationDetailDto> GetReservationByIdAsync(int reservationId);
+        // Create a new reservation
         Task AddReservationAsync(ReservationCreateDto reservation);
-        Task UpdateReservationAsync(int reservationId, ReservationUpdateDto reservation);
-        Task DeleteReservationAsync(int reservationId);
 
-        Task<IEnumerable<ReservationSummaryDto>> GetReservationsByCustomerIdAsync(int customerId);
-        Task<IEnumerable<ReservationSummaryDto>> GetReservationsByTableIdAsync(int tableId);
+        // Read operations
+        Task<ReservationDetailDto> GetReservationByIdAsync(int reservationId);
+        Task<IEnumerable<ReservationSummaryDto>> GetAllReservationsAsync();
         Task<IEnumerable<ReservationSummaryDto>> GetReservationsByDateAsync(DateTime date);
+        Task<IEnumerable<ReservationSummaryDto>> GetReservationsByTableIdAsync(int tableId);
+        Task<IEnumerable<ReservationSummaryDto>> GetReservationsByCustomerIdAsync(int customerId);
+
+        // Update an existing reservation
+        Task UpdateReservationAsync(int reservationId, ReservationUpdateDto reservation);
+
+        // Delete a reservation
+        Task DeleteReservationAsync(int reservationId);
     }
 }

@@ -4,10 +4,17 @@ namespace BistroBook.Date.Repositories.IRepositories
 {
     public interface IMenuRepository
     {
-        Task<IEnumerable<Menu>> GetAllMenuDishesAsync();
-        Task<Menu> GetDishByIdAsync(int menuId);
+        // Create a new dish
         Task AddDishAsync(Menu menu);
+
+        // Read operations
+        Task<Menu> GetDishByIdAsync(int menuId);
+        Task<IEnumerable<Menu>> GetAllMenuDishesAsync();
+
+        // Update an existing dish
         Task UpdateMenuAsync(Menu menu);
-        Task DeleteDishAsync(int menuId);
+
+        // Delete a dish
+        Task DeleteDishAsync(Menu menu);
     }
 }

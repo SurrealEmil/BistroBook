@@ -21,38 +21,16 @@ namespace BistroBook.Services
             _tableRepository = tableRepository;
         }
 
+        // Add a new reservation
         public async Task AddReservationAsync(ReservationCreateDto reservationDto)
         {
+            // Validate the customer and table
+            await ValidateCustomerAndTableAsync(reservationDto.CustomerId, reservationDto.TableId);
 
-            // Validate the customer
-            var customer = await _customerRepository.GetCustomerByIdAsync(reservationDto.CustomerId);
-            if (customer == null)
-            {
-                throw new ArgumentException("Invalid customer ID");
-            }
+            // Validate guest count and check for conflicts
+            await ValidateReservationDetailsAsync(reservationDto.GuestCount, reservationDto.TableId, reservationDto.Date, reservationDto.StartTime, reservationDto.EndTime);
 
-
-            // Validate the table
-            var table = await _tableRepository.GetTableByIdAsync(reservationDto.TableId);
-            if (table == null)
-            {
-                throw new ArgumentException("Invalid table ID");
-            }
-
-
-            // Validate the guest count
-            if (reservationDto.GuestCount > table.SeatCount)
-            {
-                throw new ArgumentException("The number of guests exceeds the available seats at the table.");
-            }
-
-            // Check for overlapping reservations
-            var conflictingReservations = await _reservationRepository.GetReservationsAsync(reservationDto.TableId, reservationDto.StartTime, reservationDto.EndTime);
-            if (conflictingReservations.Any())
-            {
-                throw new InvalidOperationException("The table is already reserved for the selected time slot.");
-            }
-
+            // Create and add the reservation
             var reservation = new Reservation
             {
                 FK_CustomerId = reservationDto.CustomerId,
@@ -60,25 +38,25 @@ namespace BistroBook.Services
                 GuestCount = reservationDto.GuestCount,
                 Date = reservationDto.Date,
                 StartTime = reservationDto.StartTime,
-                EndTime = reservationDto.EndTime,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                EndTime = reservationDto.EndTime
             };
 
             await _reservationRepository.AddReservationAsync(reservation);
         }
 
+        // Delete a reservation by its ID
         public async Task DeleteReservationAsync(int reservationId)
         {
             var reservation = await _reservationRepository.GetReservationByIdAsync(reservationId);
             if (reservation == null)
             {
-                throw new ArgumentException("Reservation not found");
+                throw new InvalidOperationException("Reservation not found");
             }
 
-            await _reservationRepository.DeleteReservationAsync(reservationId);
+            await _reservationRepository.DeleteReservationAsync(reservation);
         }
 
+        // Get all reservations and map to summary DTOs
         public async Task<IEnumerable<ReservationSummaryDto>> GetAllReservationsAsync()
         {
             var reservationList = await _reservationRepository.GetAllReservationsAsync();
@@ -90,16 +68,15 @@ namespace BistroBook.Services
                 TableId = r.FK_TableId,
                 TableNumber = r.Table.TableNumber,
                 Date = r.Date,
-                StartTime= r.StartTime,
-                EndTime= r.EndTime,
-                Status = r.Status,
+                StartTime = r.StartTime,
+                EndTime = r.EndTime,
             }).ToList();
         }
 
         public async Task<ReservationDetailDto> GetReservationByIdAsync(int reservationId)
         {
             var reservation = await _reservationRepository.GetReservationByIdAsync(reservationId);
-            if(reservation == null)
+            if (reservation == null)
             {
                 return null;
             }
@@ -115,12 +92,10 @@ namespace BistroBook.Services
                 Date = reservation.Date,
                 StartTime = reservation.StartTime,
                 EndTime = reservation.EndTime,
-                Status = reservation.Status,
-                CreatedAt = reservation.CreatedAt,
-                UpdatedAt = reservation.UpdatedAt,
             };
         }
 
+        // Get all reservations connected to a specific customer {id} and map to summary DTOs
         public async Task<IEnumerable<ReservationSummaryDto>> GetReservationsByCustomerIdAsync(int customerId)
         {
             var reservations = await _reservationRepository.GetReservationsByCustomerIdAsync(customerId);
@@ -134,10 +109,10 @@ namespace BistroBook.Services
                 Date = r.Date,
                 StartTime = r.StartTime,
                 EndTime = r.EndTime,
-                Status = r.Status
             }).ToList();
         }
 
+        // Get all reservations connected to a specific date and map to summary DTOs
         public async Task<IEnumerable<ReservationSummaryDto>> GetReservationsByDateAsync(DateTime date)
         {
             var reservations = await _reservationRepository.GetReservationsByDateAsync(date);
@@ -151,10 +126,10 @@ namespace BistroBook.Services
                 Date = r.Date,
                 StartTime = r.StartTime,
                 EndTime = r.EndTime,
-                Status = r.Status
             }).ToList();
         }
 
+        // Get all reservations connected to a specific table {id} and map to summary DTOs
         public async Task<IEnumerable<ReservationSummaryDto>> GetReservationsByTableIdAsync(int tableId)
         {
             var reservations = await _reservationRepository.GetReservationsByTableIdAsync(tableId);
@@ -168,39 +143,77 @@ namespace BistroBook.Services
                 Date = r.Date,
                 StartTime = r.StartTime,
                 EndTime = r.EndTime,
-                Status = r.Status
             }).ToList();
         }
 
-        public async Task UpdateReservationAsync(int reservationId, ReservationUpdateDto reservation)
+        // Update an existing reservation by its ID
+        public async Task UpdateReservationAsync(int reservationId, ReservationUpdateDto reservationDto)
         {
-            var existingReservation = await _reservationRepository.GetReservationByIdAsync(reservationId);
-            if (existingReservation == null)
-            {
-                throw new ArgumentException("Reservation not found");
-            }
+            // Fetch and validate the existing reservation
+            var existingReservation = await GetExistingReservationAsync(reservationId);
 
-            var customer = await _customerRepository.GetCustomerByIdAsync(reservation.CustomerId);
-            if (customer == null)
-            {
-                throw new ArgumentException("Invalid customer ID");
-            }
+            // Validate the customer and table
+            await ValidateCustomerAndTableAsync(reservationDto.CustomerId, reservationDto.TableId);
 
-            var table = await _tableRepository.GetTableByIdAsync(reservation.TableId);
-            if (table == null)
-            {
-                throw new ArgumentException("Invalid table ID");
-            }
+            // Validate guest count and check for conflicts
+            await ValidateReservationDetailsAsync(reservationDto.GuestCount, reservationDto.TableId, reservationDto.Date, reservationDto.StartTime, reservationDto.EndTime, reservationId);
 
-            existingReservation.FK_CustomerId = reservation.CustomerId;
-            existingReservation.FK_TableId = reservation.TableId;
-            existingReservation.Date = reservation.Date;
-            existingReservation.StartTime = reservation.StartTime;
-            existingReservation.EndTime = reservation.EndTime;
-            existingReservation.Status = reservation.Status;
-            existingReservation.UpdatedAt = DateTime.UtcNow;
+            // Update reservation details
+            UpdateReservation(existingReservation, reservationDto);
 
             await _reservationRepository.UpdateReservationAsync(existingReservation);
+        }
+
+        // Helper methods
+
+        private async Task<Reservation> GetExistingReservationAsync(int reservationId)
+        {
+            var reservation = await _reservationRepository.GetReservationByIdAsync(reservationId);
+            if (reservation == null)
+            {
+                throw new InvalidOperationException("Reservation was not found.");
+            }
+            return reservation;
+        }
+
+        private async Task ValidateCustomerAndTableAsync(int customerId, int tableId)
+        {
+            var customer = await _customerRepository.GetCustomerByIdAsync(customerId);
+            if (customer == null)
+            {
+                throw new InvalidOperationException("Customer was not found.");
+            }
+
+            var table = await _tableRepository.GetTableByIdAsync(tableId);
+            if (table == null)
+            {
+                throw new InvalidOperationException("Table was not found.");
+            }
+        }
+
+        private async Task ValidateReservationDetailsAsync(int guestCount, int tableId, DateTime date, TimeSpan startTime, TimeSpan endTime, int? reservationId = null)
+        {
+            var table = await _tableRepository.GetTableByIdAsync(tableId);
+            if (guestCount > table.SeatCount)
+            {
+                throw new ArgumentException("The number of guests exceeds the available seats at the table.");
+            }
+
+            var conflictingReservations = await _reservationRepository.GetReservationsAsync(tableId, date, startTime, endTime, reservationId);
+            if (conflictingReservations.Any())
+            {
+                throw new InvalidOperationException("The table is already reserved for the selected time slot.");
+            }
+        }
+
+        private void UpdateReservation(Reservation existingReservation, ReservationUpdateDto reservationDto)
+        {
+            existingReservation.FK_CustomerId = reservationDto.CustomerId;
+            existingReservation.FK_TableId = reservationDto.TableId;
+            existingReservation.GuestCount = reservationDto.GuestCount;
+            existingReservation.Date = reservationDto.Date;
+            existingReservation.StartTime = reservationDto.StartTime;
+            existingReservation.EndTime = reservationDto.EndTime;
         }
     }
 }

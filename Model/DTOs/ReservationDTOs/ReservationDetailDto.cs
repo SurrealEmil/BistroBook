@@ -13,8 +13,5 @@ namespace BistroBook.Model.DTOs.ReservationDTOs
         public DateTime Date { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-        public ReservationStatus Status { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 }

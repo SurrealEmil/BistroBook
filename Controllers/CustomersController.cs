@@ -3,6 +3,7 @@ using BistroBook.Model.DTOs.CustomerDTOs;
 using BistroBook.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BistroBook.Controllers
 {
@@ -17,44 +18,85 @@ namespace BistroBook.Controllers
             _customerService = customerService;
         }
 
+        // Get /api/Customers/GetAllCustomers
         [HttpGet]
         [Route("GetAllCustomers")]
         public async Task<ActionResult<IEnumerable<Customer>>> GetAllCustomers()
         {
             var customerList = await _customerService.GetAllCustomersAsync();
+
+            if (customerList.IsNullOrEmpty())
+            {
+                return StatusCode(404, "No customers found.");
+            }
+
             return Ok(customerList);
         }
 
+        // Get /api/Customers/GetCustomerById/{id}
         [HttpGet]
-        [Route("GetCustomerById/{customerId}")]
-        public async Task<ActionResult<Customer>> GetCustomerById(int customerId)
+        [Route("GetCustomerById/{id}")]
+        public async Task<ActionResult<Customer>> GetCustomerById(int id)
         {
-            var customer = await _customerService.GetCustomerByIdAsync(customerId);
+            var customer = await _customerService.GetCustomerByIdAsync(id);
+
+            if (customer == null)
+            {
+                return StatusCode(404, "No matching customer found.");
+            }
+
             return Ok(customer);
         }
 
+        // Post /api/Customers/AddCustomer
         [HttpPost]
         [Route("AddCustomer")]
         public async Task<ActionResult> AddCustomer([FromBody] CustomerCreateDto customer)
         {
-            await _customerService.AddCustomerAsync(customer);
-            return Ok();
+            try
+            {
+                await _customerService.AddCustomerAsync(customer);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+            return Ok("Customer added successfully.");
         }
 
+        // Put /api/Customers/UpdateCustomer/{id}
         [HttpPut]
-        [Route("UpdateCustomer/{customerId}")]
-        public async Task<ActionResult> UpdateCustomer(int customerId, [FromBody] CustomerUpdateDto customer)
+        [Route("UpdateCustomer/{id}")]
+        public async Task<ActionResult> UpdateCustomer(int id, [FromBody] CustomerUpdateDto customer)
         {
-            await _customerService.UpdateCustomerAsync(customerId, customer);
-            return Ok();
+            try
+            {
+                await _customerService.UpdateCustomerAsync(id, customer);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+            return Ok("Customer updated successfully.");
         }
 
+        // DELETE /api/Customers/DeleteCustomer/{id}
         [HttpDelete]
-        [Route("DeleteCustomer/{customerId}")]
-        public async Task<ActionResult<Customer>> DeleteCustomer([FromBody] int customerId)
+        [Route("DeleteCustomer/{id}")]
+        public async Task<ActionResult<Customer>> DeleteCustomer(int id)
         {
-            await _customerService.DeleteCustomerAsync(customerId);
-            return Ok();
+            try
+            {
+                await _customerService.DeleteCustomerAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok("Customer deleted successfully.");
         }
     }
 }
