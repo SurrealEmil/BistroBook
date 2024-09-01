@@ -28,7 +28,7 @@ namespace BistroBook.Controllers
 
             if (tableList.IsNullOrEmpty())
             {
-                return StatusCode(404, "No tables found.");
+                return NotFound("No tables found.");
             }
 
             return Ok(tableList);
@@ -43,7 +43,7 @@ namespace BistroBook.Controllers
 
             if (table == null)
             {
-                return StatusCode(404, "No matching table found.");
+                return NotFound("No matching table found.");
             }
 
             return Ok(table);
