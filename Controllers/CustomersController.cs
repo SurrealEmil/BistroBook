@@ -21,7 +21,7 @@ namespace BistroBook.Controllers
         // Get /api/Customers/GetAllCustomers
         [HttpGet]
         [Route("GetAllCustomers")]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetAllCustomers()
+        public async Task<ActionResult<IEnumerable<CustomerSummaryDto>>> GetAllCustomers()
         {
             var customerList = await _customerService.GetAllCustomersAsync();
 
@@ -36,7 +36,7 @@ namespace BistroBook.Controllers
         // Get /api/Customers/GetCustomerById/{id}
         [HttpGet]
         [Route("GetCustomerById/{id}")]
-        public async Task<ActionResult<Customer>> GetCustomerById(int id)
+        public async Task<ActionResult<CustomerDetailDto>> GetCustomerById(int id)
         {
             var customer = await _customerService.GetCustomerByIdAsync(id);
 
@@ -85,7 +85,7 @@ namespace BistroBook.Controllers
         // DELETE /api/Customers/DeleteCustomer/{id}
         [HttpDelete]
         [Route("DeleteCustomer/{id}")]
-        public async Task<ActionResult<Customer>> DeleteCustomer(int id)
+        public async Task<ActionResult> DeleteCustomer(int id)
         {
             try
             {

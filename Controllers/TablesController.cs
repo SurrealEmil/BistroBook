@@ -22,7 +22,7 @@ namespace BistroBook.Controllers
         // Get /api/Tables/GetAllTables
         [HttpGet]
         [Route("GetAllTables")]
-        public async Task<ActionResult<IEnumerable<Table>>> GetAllTables()
+        public async Task<ActionResult<IEnumerable<TableSummaryDto>>> GetAllTables()
         {
             var tableList = await _tableService.GetAllTablesAsync();
 
@@ -37,7 +37,7 @@ namespace BistroBook.Controllers
         // Get /api/Tables/GetTableById/{id}
         [HttpGet]
         [Route("GetTableById/{id}")]
-        public async Task<ActionResult<Table>> GetTableById(int id)
+        public async Task<ActionResult<TableDetailDto>> GetTableById(int id)
         {
             var table = await _tableService.GetTableByIdAsync(id);
 
@@ -86,7 +86,7 @@ namespace BistroBook.Controllers
         // Delete /api/Tables/DeleteTable/{id}
         [HttpDelete]
         [Route("DeleteTable/{id}")]
-        public async Task<ActionResult<Table>> DeleteTable(int id)
+        public async Task<ActionResult> DeleteTable(int id)
         {
             try
             {

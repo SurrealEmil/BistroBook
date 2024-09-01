@@ -23,7 +23,7 @@ namespace BistroBook.Controllers
         // Get /api/Menus/GetAllMenuDishes
         [HttpGet]
         [Route("GetAllMenuDishes")]
-        public async Task<ActionResult<IEnumerable<Menu>>> GetAllMenuDishes()
+        public async Task<ActionResult<IEnumerable<MenuSummaryDto>>> GetAllMenuDishes()
         {
             var menuList = await _menuService.GetAllMenuDishesAsync();
 
@@ -38,7 +38,7 @@ namespace BistroBook.Controllers
         //Get /api/Menus/GetDishById/{id}
         [HttpGet]
         [Route("GetDishById/{id}")]
-        public async Task<ActionResult<Menu>> GetDishById(int id)
+        public async Task<ActionResult<MenuDetailDto>> GetDishById(int id)
         {
             var menu = await _menuService.GetDishByIdAsync(id);
 
@@ -85,7 +85,7 @@ namespace BistroBook.Controllers
         // Delete /api/Menus/DeleteDish/{id}
         [HttpDelete]
         [Route("DeleteDish/{id}")]
-        public async Task<ActionResult<Menu>> DeleteDish(int id)
+        public async Task<ActionResult> DeleteDish(int id)
         {
             try
             {
