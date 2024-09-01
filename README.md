@@ -1,5 +1,5 @@
 # BistroBook
-In this task, you will develop a backend system to manage reservations, customer information, and menus for a restaurant. 
+In this task, I will develop a backend system to manage reservations, customer information, and menus for a restaurant. 
 The system will enable the management of tables, bookings, customers, and menus through a Web API, allowing the restaurant to efficiently administer its resources.
 
 ## Table of Contents
