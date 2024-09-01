@@ -29,7 +29,7 @@ namespace BistroBook.Controllers
 
             if (menuList.IsNullOrEmpty())
             {
-                return StatusCode(404, "No dish found.");
+                return NotFound("No dish found.");
             }
 
             return Ok(menuList);
@@ -44,7 +44,7 @@ namespace BistroBook.Controllers
 
             if (menu == null)
             {
-                return StatusCode(404, "No matching dish found.");
+                return NotFound("No matching dish found.");
             }
 
             return Ok(menu);

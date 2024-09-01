@@ -27,7 +27,7 @@ namespace BistroBook.Controllers
 
             if (customerList.IsNullOrEmpty())
             {
-                return StatusCode(404, "No customers found.");
+                return NotFound("No customers found.");
             }
 
             return Ok(customerList);
@@ -42,7 +42,7 @@ namespace BistroBook.Controllers
 
             if (customer == null)
             {
-                return StatusCode(404, "No matching customer found.");
+                return NotFound("No matching customer found.");
             }
 
             return Ok(customer);

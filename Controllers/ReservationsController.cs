@@ -26,7 +26,7 @@ namespace BistroBook.Controllers
 
             if (reservationList.IsNullOrEmpty())
             {
-                return StatusCode(404, "No reservations found.");
+                return NotFound("No reservations found.");
             }
 
             return Ok(reservationList);
@@ -41,7 +41,7 @@ namespace BistroBook.Controllers
 
             if (reservation == null)
             {
-                return StatusCode(404, "No matching reservation found.");
+                return NotFound("No matching reservation found.");
             }
 
             return Ok(reservation);
@@ -107,7 +107,7 @@ namespace BistroBook.Controllers
 
             if (reservations.IsNullOrEmpty())
             {
-                return StatusCode(404, "No reservations found.");
+                return NotFound("No reservations found.");
             }   
 
             return Ok(reservations);
@@ -122,7 +122,7 @@ namespace BistroBook.Controllers
 
             if (reservations.IsNullOrEmpty())
             {
-                return StatusCode(404, "No reservations found.");
+                return NotFound("No reservations found.");
             }  
 
             return Ok(reservations);
@@ -137,7 +137,7 @@ namespace BistroBook.Controllers
 
             if (reservations.IsNullOrEmpty())
             {
-                return StatusCode(404, "No reservations found.");
+                return NotFound("No reservations found.");
             }
 
             return Ok(reservations);
