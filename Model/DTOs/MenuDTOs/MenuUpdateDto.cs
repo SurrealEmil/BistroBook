@@ -16,6 +16,8 @@ namespace BistroBook.Model.DTOs.MenuDTOs
         [Range(0, int.MaxValue, ErrorMessage = "Price must be a positive value.")]
         public int Price { get; set; }
 
+        public bool IsFavorite { get; set; }
+
         public bool IsAvailable { get; set; }
     }
 }

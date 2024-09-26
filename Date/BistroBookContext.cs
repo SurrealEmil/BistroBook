@@ -10,19 +10,15 @@ namespace BistroBook.Date
             
         }
 
-        public DbSet<Table> Tables { get; set; }
-        public DbSet<Reservation> Reservations { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Menu> Menus { get; set; }
+        //public DbSet<Table> Tables { get; set; }
+        //public DbSet<Reservation> Reservations { get; set; }
+        //public DbSet<Customer> Customers { get; set; }
+        //public DbSet<Menu> Menus { get; set; }
+        //public DbSet<Account> Accounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            // Define a unique index on the combination of TableID, Date, and Time
-            //modelBuilder.Entity<Reservation>()
-            //    .HasIndex(r => new { r.FK_TableId, r.Date, r.Time })
-            //    .IsUnique();
 
             modelBuilder.Entity<Customer>().HasData
                 (
@@ -44,11 +40,11 @@ namespace BistroBook.Date
 
             modelBuilder.Entity<Menu>().HasData
                 (
-                    new Menu { MenuId = 1, DishName = "Swedish Meatballs", Description = "Tender meatballs served with creamy mashed potatoes, lingonberry sauce, and gravy.", Price = 120, IsAvailable = true },
-                    new Menu { MenuId = 2, DishName = "Grilled Salmon Fillet", Description = "Fresh salmon fillet grilled to perfection, served with dill sauce and roasted vegetables.", Price = 180, IsAvailable = true },
-                    new Menu { MenuId = 3, DishName = "Creamy Mushroom Pasta", Description = "Tagliatelle pasta tossed in a creamy mushroom sauce with a hint of garlic and Parmesan.", Price = 140, IsAvailable = true },
-                    new Menu { MenuId = 4, DishName = "Crispy Chicken Salad", Description = "Crisp chicken strips served on a bed of mixed greens, cherry tomatoes, cucumbers, and honey mustard dressing.", Price = 99, IsAvailable = true },
-                    new Menu { MenuId = 5, DishName = "Shrimp Skagen", Description = "A classic Swedish shrimp salad mixed with mayonnaise, dill, and lemon, served on toast.", Price = 115, IsAvailable = false }
+                    new Menu { Id = 1, DishName = "Swedish Meatballs", Description = "Tender meatballs served with creamy mashed potatoes, lingonberry sauce, and gravy.", Price = 120, IsFavorite = true, IsAvailable = true },
+                    new Menu { Id = 2, DishName = "Grilled Salmon Fillet", Description = "Fresh salmon fillet grilled to perfection, served with dill sauce and roasted vegetables.", Price = 180, IsFavorite = true, IsAvailable = true },
+                    new Menu { Id = 3, DishName = "Creamy Mushroom Pasta", Description = "Tagliatelle pasta tossed in a creamy mushroom sauce with a hint of garlic and Parmesan.", Price = 140, IsFavorite = true, IsAvailable = true },
+                    new Menu { Id = 4, DishName = "Crispy Chicken Salad", Description = "Crisp chicken strips served on a bed of mixed greens, cherry tomatoes, cucumbers, and honey mustard dressing.", Price = 99, IsFavorite = false, IsAvailable = true },
+                    new Menu { Id = 5, DishName = "Shrimp Skagen", Description = "A classic Swedish shrimp salad mixed with mayonnaise, dill, and lemon, served on toast.", Price = 115, IsFavorite = false, IsAvailable = false }
                 );
 
             modelBuilder.Entity<Reservation>().HasData(

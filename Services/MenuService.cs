@@ -22,6 +22,7 @@ namespace BistroBook.Services
                 DishName = menu.DishName,
                 Description = menu.Description,
                 Price = menu.Price,
+                IsFavorite = menu.IsFavorite,
                 IsAvailable = menu.IsAvailable,
             };
             await _menuRepository.AddDishAsync(newMenuItem);
@@ -39,15 +40,30 @@ namespace BistroBook.Services
             await _menuRepository.DeleteDishAsync(menu);
         }
 
+        public async Task<IEnumerable<MenuDetailDto>> GetAllFavoriteMenuDishesAsync()
+        {
+            var menuFavorit = await _menuRepository.GetAllFavoriteMenuDishesAsync();
+            return menuFavorit.Select(m => new MenuDetailDto
+            {
+                Id = m.Id,
+                DishName = m.DishName,
+                Description = m.Description,
+                Price = m.Price,
+                IsFavorite = m.IsFavorite,
+                IsAvailable = m.IsAvailable,
+            }).ToList();
+        }
+
         // Get all dishes and map to summary DTOs
         public async Task<IEnumerable<MenuSummaryDto>> GetAllMenuDishesAsync()
         {
             var menuList = await _menuRepository.GetAllMenuDishesAsync();
             return menuList.Select(m => new MenuSummaryDto
             {
-                MenuId = m.MenuId,
+                Id = m.Id,
                 DishName = m.DishName,
                 Price = m.Price,
+                IsFavorite = m.IsFavorite,
                 IsAvailable = m.IsAvailable,
             }).ToList();
         }
@@ -63,10 +79,11 @@ namespace BistroBook.Services
 
             return new MenuDetailDto
             {
-                MenuId = menu.MenuId,
+                Id = menu.Id,
                 DishName = menu.DishName,
                 Description = menu.Description,
                 Price = menu.Price,
+                IsFavorite = menu.IsFavorite,
                 IsAvailable = menu.IsAvailable,
             };
         }
@@ -82,6 +99,7 @@ namespace BistroBook.Services
             updateMenu.DishName = menu.DishName;
             updateMenu.Description = menu.Description;
             updateMenu.Price = menu.Price;
+            updateMenu.IsFavorite = menu.IsFavorite;
             updateMenu.IsAvailable = menu.IsAvailable;
 
             await _menuRepository.UpdateMenuAsync(updateMenu);

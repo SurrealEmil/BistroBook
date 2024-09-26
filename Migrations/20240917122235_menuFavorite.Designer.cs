@@ -4,6 +4,7 @@ using BistroBook.Date;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BistroBook.Migrations
 {
     [DbContext(typeof(BistroBookContext))]
-    partial class BistroBookContextModelSnapshot : ModelSnapshot
+    [Migration("20240917122235_menuFavorite")]
+    partial class menuFavorite
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,11 +102,11 @@ namespace BistroBook.Migrations
 
             modelBuilder.Entity("BistroBook.Model.Menu", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MenuId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -124,14 +127,14 @@ namespace BistroBook.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("MenuId");
 
                     b.ToTable("Menus");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            MenuId = 1,
                             Description = "Tender meatballs served with creamy mashed potatoes, lingonberry sauce, and gravy.",
                             DishName = "Swedish Meatballs",
                             IsAvailable = true,
@@ -140,7 +143,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            MenuId = 2,
                             Description = "Fresh salmon fillet grilled to perfection, served with dill sauce and roasted vegetables.",
                             DishName = "Grilled Salmon Fillet",
                             IsAvailable = true,
@@ -149,7 +152,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            MenuId = 3,
                             Description = "Tagliatelle pasta tossed in a creamy mushroom sauce with a hint of garlic and Parmesan.",
                             DishName = "Creamy Mushroom Pasta",
                             IsAvailable = true,
@@ -158,7 +161,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            MenuId = 4,
                             Description = "Crisp chicken strips served on a bed of mixed greens, cherry tomatoes, cucumbers, and honey mustard dressing.",
                             DishName = "Crispy Chicken Salad",
                             IsAvailable = true,
@@ -167,7 +170,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            MenuId = 5,
                             Description = "A classic Swedish shrimp salad mixed with mayonnaise, dill, and lemon, served on toast.",
                             DishName = "Shrimp Skagen",
                             IsAvailable = false,
