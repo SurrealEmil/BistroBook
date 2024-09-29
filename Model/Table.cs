@@ -6,7 +6,7 @@ namespace BistroBook.Model
     {
         // Primary key
         [Key]
-        public int TableId { get; set; }
+        public int Id { get; set; }
 
         // Table properties
         [Required]

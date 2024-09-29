@@ -128,6 +128,21 @@ namespace BistroBook.Controllers
             return Ok(reservations);
         }
 
+        // GET: api/Reservations/GetReservationsByDate/{id}/2024-08-30
+        [HttpGet]
+        [Route("GetReservationsByTableIdAndDate/{id}/{date}")]
+        public async Task<ActionResult<IEnumerable<ReservationSummaryDto>>> GetReservationsByTableIdAndDate(int id, DateTime date)
+        {
+            var reservations = await _reservationService.GetReservationsByTableIdAndDateAsync(id, date);
+
+            if (reservations.IsNullOrEmpty())
+            {
+                return Ok(new List<ReservationSummaryDto>());
+            }
+
+            return Ok(reservations);
+        }
+
         // GET: api/Reservations/GetReservationsByDate/2024-08-30
         [HttpGet]
         [Route("GetReservationsByDate/{date}")]

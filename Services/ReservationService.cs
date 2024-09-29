@@ -62,7 +62,7 @@ namespace BistroBook.Services
             var reservationList = await _reservationRepository.GetAllReservationsAsync();
             return reservationList.Select(r => new ReservationSummaryDto
             {
-                ReservationId = r.ReservationId,
+                Id = r.Id,
                 CustomerId = r.FK_CustomerId,
                 CustomerFullName = $"{r.Customer.FirstName} {r.Customer.LastName}",
                 TableId = r.FK_TableId,
@@ -83,7 +83,7 @@ namespace BistroBook.Services
 
             return new ReservationDetailDto
             {
-                ReservationId = reservation.ReservationId,
+                Id = reservation.Id,
                 TableId = reservation.FK_TableId,
                 TableNumber = reservation.Table.TableNumber,
                 CustomerId = reservation.FK_CustomerId,
@@ -101,7 +101,7 @@ namespace BistroBook.Services
             var reservations = await _reservationRepository.GetReservationsByCustomerIdAsync(customerId);
             return reservations.Select(r => new ReservationSummaryDto
             {
-                ReservationId = r.ReservationId,
+                Id = r.Id,
                 TableId = r.FK_TableId,
                 TableNumber = r.Table.TableNumber,
                 CustomerId = r.FK_CustomerId,
@@ -118,7 +118,23 @@ namespace BistroBook.Services
             var reservations = await _reservationRepository.GetReservationsByDateAsync(date);
             return reservations.Select(r => new ReservationSummaryDto
             {
-                ReservationId = r.ReservationId,
+                Id = r.Id,
+                TableId = r.FK_TableId,
+                TableNumber = r.Table.TableNumber,
+                CustomerId = r.FK_CustomerId,
+                CustomerFullName = $"{r.Customer.FirstName} {r.Customer.LastName}",
+                Date = r.Date,
+                StartTime = r.StartTime,
+                EndTime = r.EndTime,
+            }).ToList();
+        }
+
+        public async Task<IEnumerable<ReservationSummaryDto>> GetReservationsByTableIdAndDateAsync(int tableId, DateTime date)
+        {
+            var reservations = await _reservationRepository.GetReservationsByTableIdAndDateAsync(tableId, date);
+            return reservations.Select(r => new ReservationSummaryDto
+            {
+                Id = r.Id,
                 TableId = r.FK_TableId,
                 TableNumber = r.Table.TableNumber,
                 CustomerId = r.FK_CustomerId,
@@ -135,7 +151,7 @@ namespace BistroBook.Services
             var reservations = await _reservationRepository.GetReservationsByTableIdAsync(tableId);
             return reservations.Select(r => new ReservationSummaryDto
             {
-                ReservationId = r.ReservationId,
+                Id = r.Id,
                 TableId = r.FK_TableId,
                 TableNumber = r.Table.TableNumber,
                 CustomerId = r.FK_CustomerId,
@@ -215,5 +231,6 @@ namespace BistroBook.Services
             existingReservation.StartTime = reservationDto.StartTime;
             existingReservation.EndTime = reservationDto.EndTime;
         }
+
     }
 }

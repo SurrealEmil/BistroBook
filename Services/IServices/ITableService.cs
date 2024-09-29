@@ -11,6 +11,7 @@ namespace BistroBook.Services.IServices
         // Read operations
         Task<TableDetailDto> GetTableByIdAsync(int tableId);
         Task<IEnumerable<TableSummaryDto>> GetAllTablesAsync();
+        Task<IEnumerable<TableSummaryDto>> GetAvailableTablesAsync(int guestCount);
 
         // Update an existing table
         Task UpdateTableAsync(int tableId, TableUpdateDto table);

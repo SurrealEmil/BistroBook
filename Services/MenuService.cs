@@ -62,6 +62,7 @@ namespace BistroBook.Services
             {
                 Id = m.Id,
                 DishName = m.DishName,
+                Description = m.Description,
                 Price = m.Price,
                 IsFavorite = m.IsFavorite,
                 IsAvailable = m.IsAvailable,

@@ -44,7 +44,7 @@ namespace BistroBook.Services
             var customerList = await _customerRepository.GetAllCustomersAsync();
             return customerList.Select(c => new CustomerSummaryDto
             {
-                CustomerId = c.CustomerId,
+                Id = c.Id,
                 LastName = c.LastName,
                 Email = c.Email,
             }).ToList();
@@ -61,7 +61,7 @@ namespace BistroBook.Services
 
             return new CustomerDetailDto
             {
-                CustomerId = customer.CustomerId,
+                Id = customer.Id,
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
                 Email = customer.Email,

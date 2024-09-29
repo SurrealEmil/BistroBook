@@ -10,11 +10,11 @@ namespace BistroBook.Date
             
         }
 
-        //public DbSet<Table> Tables { get; set; }
-        //public DbSet<Reservation> Reservations { get; set; }
-        //public DbSet<Customer> Customers { get; set; }
-        //public DbSet<Menu> Menus { get; set; }
-        //public DbSet<Account> Accounts { get; set; }
+        public DbSet<Table> Tables { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,20 +22,20 @@ namespace BistroBook.Date
 
             modelBuilder.Entity<Customer>().HasData
                 (
-                    new Customer { CustomerId = 1, FirstName = "Jan", LastName = "Eriksson", Email = "Jan.Eriksson@gmail.com", PhoneNumber = "0701234567"},
-                    new Customer { CustomerId = 2, FirstName = "Johan", LastName = "Anderson", Email = "Johan.Anderson@gmail.com", PhoneNumber = "0702345678" },
-                    new Customer { CustomerId = 3, FirstName = "Anton", LastName = "StenBerg", Email = "Anton.StenBerg@gmail.com", PhoneNumber = "0703456789" },
-                    new Customer { CustomerId = 4, FirstName = "Ida", LastName = "Lundberg", Email = "Ida.Lundberg@gmail.com", PhoneNumber = "0704567890" },
-                    new Customer { CustomerId = 5, FirstName = "Julia", LastName = "Levenhagen", Email = "Julia.Levenhagen@gmail.com", PhoneNumber = "0705678901" }
+                    new Customer { Id = 1, FirstName = "Jan", LastName = "Eriksson", Email = "Jan.Eriksson@gmail.com", PhoneNumber = "0701234567"},
+                    new Customer { Id = 2, FirstName = "Johan", LastName = "Anderson", Email = "Johan.Anderson@gmail.com", PhoneNumber = "0702345678" },
+                    new Customer { Id = 3, FirstName = "Anton", LastName = "StenBerg", Email = "Anton.StenBerg@gmail.com", PhoneNumber = "0703456789" },
+                    new Customer { Id = 4, FirstName = "Ida", LastName = "Lundberg", Email = "Ida.Lundberg@gmail.com", PhoneNumber = "0704567890" },
+                    new Customer { Id = 5, FirstName = "Julia", LastName = "Levenhagen", Email = "Julia.Levenhagen@gmail.com", PhoneNumber = "0705678901" }
                 );
 
             modelBuilder.Entity<Table>().HasData
                 (
-                    new Table { TableId = 1, TableNumber = 1, SeatCount = 4 },
-                    new Table { TableId = 2, TableNumber = 2, SeatCount = 6 },
-                    new Table { TableId = 3, TableNumber = 3, SeatCount = 2 },
-                    new Table { TableId = 4, TableNumber = 4, SeatCount = 8 },
-                    new Table { TableId = 5, TableNumber = 5, SeatCount = 5 }
+                    new Table { Id = 1, TableNumber = 1, SeatCount = 4 },
+                    new Table { Id = 2, TableNumber = 2, SeatCount = 6 },
+                    new Table { Id = 3, TableNumber = 3, SeatCount = 2 },
+                    new Table { Id = 4, TableNumber = 4, SeatCount = 8 },
+                    new Table { Id = 5, TableNumber = 5, SeatCount = 5 }
                 );
 
             modelBuilder.Entity<Menu>().HasData
@@ -50,7 +50,7 @@ namespace BistroBook.Date
             modelBuilder.Entity<Reservation>().HasData(
                 new Reservation
                 {
-                    ReservationId = 1,
+                    Id = 1,
                     FK_CustomerId = 1,
                     FK_TableId = 1,
                     Date = new DateTime(2024, 8, 29),
@@ -60,7 +60,7 @@ namespace BistroBook.Date
                 },
                 new Reservation
                 {
-                    ReservationId = 2,
+                    Id = 2,
                     FK_CustomerId = 2,
                     FK_TableId = 2,
                     Date = new DateTime(2024, 8, 30),
