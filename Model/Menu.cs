@@ -6,7 +6,7 @@ namespace BistroBook.Model
     {
         // Primary key
         [Key]
-        public int MenuId { get; set; }
+        public int Id { get; set; }
 
         // Dish details
         [Required]
@@ -21,6 +21,9 @@ namespace BistroBook.Model
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Price must be a positive value.")]
         public int Price { get; set; }
+
+        // Favorite status
+        public bool IsFavorite { get; set; }
 
         // Availability status
         public bool IsAvailable { get; set; }

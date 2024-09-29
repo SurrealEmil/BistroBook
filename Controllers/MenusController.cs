@@ -35,6 +35,21 @@ namespace BistroBook.Controllers
             return Ok(menuList);
         }
 
+        // Get /api/Menus/GetAllMenuDishes
+        [HttpGet]
+        [Route("GetAllFavoriteMenuDishes")]
+        public async Task<ActionResult<IEnumerable<MenuDetailDto>>> GetAllFavoriteMenuDishes()
+        {
+            var menuFavorite = await _menuService.GetAllFavoriteMenuDishesAsync();
+
+            if (menuFavorite.IsNullOrEmpty())
+            {
+                return NotFound("No dish found.");
+            }
+
+            return Ok(menuFavorite);
+        }
+
         //Get /api/Menus/GetDishById/{id}
         [HttpGet]
         [Route("GetDishById/{id}")]

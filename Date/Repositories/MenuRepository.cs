@@ -8,9 +8,9 @@ namespace BistroBook.Date.Repositories
     {
         private readonly BistroBookContext _context;
 
-        public MenuRepository(BistroBookContext contest)
+        public MenuRepository(BistroBookContext context)
         {
-            _context = contest;
+            _context = context;
         }
 
         // Add a new customer
@@ -25,6 +25,13 @@ namespace BistroBook.Date.Repositories
         {
             _context.Menus.Remove(menu);
             await _context.SaveChangesAsync();
+        }
+
+        // Get all favorite dishes
+        public async Task<IEnumerable<Menu>> GetAllFavoriteMenuDishesAsync()
+        {
+            var menuFavorite = await _context.Menus.Where(menu => menu.IsFavorite).ToListAsync();
+            return menuFavorite;
         }
 
         // Get all dishes

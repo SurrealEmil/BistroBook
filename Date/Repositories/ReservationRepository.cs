@@ -39,7 +39,7 @@ namespace BistroBook.Date.Repositories
         public async Task<Reservation> GetReservationByIdAsync(int reservationId)
         {
             var reservation = await GetReservationsWithDetails()
-                .FirstOrDefaultAsync(r => r.ReservationId == reservationId);
+                .FirstOrDefaultAsync(r => r.Id == reservationId);
             return reservation;
         }
 
@@ -49,7 +49,7 @@ namespace BistroBook.Date.Repositories
             var reservations = await _context.Reservations
                 .Where(r => r.FK_TableId == tableId &&
                             r.Date == date && // Ensure that only the same date is checked
-                            r.ReservationId != reservationId && // Exclude the reservation being updated
+                            r.Id != reservationId && // Exclude the reservation being updated
                             r.StartTime < endTime &&
                             r.EndTime > startTime)
                 .ToListAsync();
@@ -73,6 +73,14 @@ namespace BistroBook.Date.Repositories
                 .Where(r => r.Date.Date == date.Date)
                 .ToListAsync();
             return reservationDate;
+        }
+
+        public async Task<IEnumerable<Reservation>> GetReservationsByTableIdAndDateAsync(int tableId, DateTime date)
+        {
+            var reservationDateAndTable = await GetReservationsWithDetails()
+                .Where(r => r.Date.Date == date.Date && r.FK_TableId == tableId)
+                .ToListAsync();
+            return reservationDateAndTable;
         }
 
         // Get reservations for a specific table

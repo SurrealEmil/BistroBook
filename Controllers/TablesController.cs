@@ -34,6 +34,21 @@ namespace BistroBook.Controllers
             return Ok(tableList);
         }
 
+        // Get /api/Tables/GetAvailableTables
+        [HttpGet]
+        [Route("GetAvailableTables{guestCount}")]
+        public async Task<ActionResult<IEnumerable<TableSummaryDto>>> GetAvailableTables(int guestCount)
+        {
+            var availableTables = await _tableService.GetAvailableTablesAsync(guestCount);
+
+            if (availableTables.IsNullOrEmpty())
+            {
+                return NotFound("No tables found.");
+            }
+
+            return Ok(availableTables);
+        }
+
         // Get /api/Tables/GetTableById/{id}
         [HttpGet]
         [Route("GetTableById/{id}")]

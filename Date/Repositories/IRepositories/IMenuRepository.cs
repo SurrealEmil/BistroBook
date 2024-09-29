@@ -10,6 +10,7 @@ namespace BistroBook.Date.Repositories.IRepositories
         // Read operations
         Task<Menu> GetDishByIdAsync(int menuId);
         Task<IEnumerable<Menu>> GetAllMenuDishesAsync();
+        Task<IEnumerable<Menu>> GetAllFavoriteMenuDishesAsync();
 
         // Update an existing dish
         Task UpdateMenuAsync(Menu menu);

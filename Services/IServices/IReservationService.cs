@@ -1,4 +1,5 @@
-﻿using BistroBook.Model.DTOs.ReservationDTOs;
+﻿using BistroBook.Model;
+using BistroBook.Model.DTOs.ReservationDTOs;
 
 namespace BistroBook.Services.IServices
 {
@@ -12,6 +13,7 @@ namespace BistroBook.Services.IServices
         Task<IEnumerable<ReservationSummaryDto>> GetAllReservationsAsync();
         Task<IEnumerable<ReservationSummaryDto>> GetReservationsByDateAsync(DateTime date);
         Task<IEnumerable<ReservationSummaryDto>> GetReservationsByTableIdAsync(int tableId);
+        Task<IEnumerable<ReservationSummaryDto>> GetReservationsByTableIdAndDateAsync(int tableId, DateTime date);
         Task<IEnumerable<ReservationSummaryDto>> GetReservationsByCustomerIdAsync(int customerId);
 
         // Update an existing reservation

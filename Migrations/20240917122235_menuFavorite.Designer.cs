@@ -4,6 +4,7 @@ using BistroBook.Date;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BistroBook.Migrations
 {
     [DbContext(typeof(BistroBookContext))]
-    partial class BistroBookContextModelSnapshot : ModelSnapshot
+    [Migration("20240917122235_menuFavorite")]
+    partial class menuFavorite
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,42 +25,13 @@ namespace BistroBook.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BistroBook.Model.Account", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Accounts");
-                });
-
             modelBuilder.Entity("BistroBook.Model.Customer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CustomerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -79,14 +53,14 @@ namespace BistroBook.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("Id");
+                    b.HasKey("CustomerId");
 
                     b.ToTable("Customers");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            CustomerId = 1,
                             Email = "Jan.Eriksson@gmail.com",
                             FirstName = "Jan",
                             LastName = "Eriksson",
@@ -94,7 +68,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            CustomerId = 2,
                             Email = "Johan.Anderson@gmail.com",
                             FirstName = "Johan",
                             LastName = "Anderson",
@@ -102,7 +76,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            CustomerId = 3,
                             Email = "Anton.StenBerg@gmail.com",
                             FirstName = "Anton",
                             LastName = "StenBerg",
@@ -110,7 +84,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            CustomerId = 4,
                             Email = "Ida.Lundberg@gmail.com",
                             FirstName = "Ida",
                             LastName = "Lundberg",
@@ -118,7 +92,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            CustomerId = 5,
                             Email = "Julia.Levenhagen@gmail.com",
                             FirstName = "Julia",
                             LastName = "Levenhagen",
@@ -128,11 +102,11 @@ namespace BistroBook.Migrations
 
             modelBuilder.Entity("BistroBook.Model.Menu", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MenuId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -153,14 +127,14 @@ namespace BistroBook.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("MenuId");
 
                     b.ToTable("Menus");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            MenuId = 1,
                             Description = "Tender meatballs served with creamy mashed potatoes, lingonberry sauce, and gravy.",
                             DishName = "Swedish Meatballs",
                             IsAvailable = true,
@@ -169,7 +143,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            MenuId = 2,
                             Description = "Fresh salmon fillet grilled to perfection, served with dill sauce and roasted vegetables.",
                             DishName = "Grilled Salmon Fillet",
                             IsAvailable = true,
@@ -178,7 +152,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            MenuId = 3,
                             Description = "Tagliatelle pasta tossed in a creamy mushroom sauce with a hint of garlic and Parmesan.",
                             DishName = "Creamy Mushroom Pasta",
                             IsAvailable = true,
@@ -187,7 +161,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            MenuId = 4,
                             Description = "Crisp chicken strips served on a bed of mixed greens, cherry tomatoes, cucumbers, and honey mustard dressing.",
                             DishName = "Crispy Chicken Salad",
                             IsAvailable = true,
@@ -196,7 +170,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            MenuId = 5,
                             Description = "A classic Swedish shrimp salad mixed with mayonnaise, dill, and lemon, served on toast.",
                             DishName = "Shrimp Skagen",
                             IsAvailable = false,
@@ -207,11 +181,11 @@ namespace BistroBook.Migrations
 
             modelBuilder.Entity("BistroBook.Model.Reservation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ReservationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -231,7 +205,7 @@ namespace BistroBook.Migrations
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
-                    b.HasKey("Id");
+                    b.HasKey("ReservationId");
 
                     b.HasIndex("FK_CustomerId");
 
@@ -242,7 +216,7 @@ namespace BistroBook.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            ReservationId = 1,
                             Date = new DateTime(2024, 8, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndTime = new TimeSpan(0, 19, 0, 0, 0),
                             FK_CustomerId = 1,
@@ -252,7 +226,7 @@ namespace BistroBook.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            ReservationId = 2,
                             Date = new DateTime(2024, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndTime = new TimeSpan(0, 21, 0, 0, 0),
                             FK_CustomerId = 2,
@@ -264,11 +238,11 @@ namespace BistroBook.Migrations
 
             modelBuilder.Entity("BistroBook.Model.Table", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("TableId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TableId"));
 
                     b.Property<int>("SeatCount")
                         .HasColumnType("int");
@@ -276,38 +250,38 @@ namespace BistroBook.Migrations
                     b.Property<int>("TableNumber")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("TableId");
 
                     b.ToTable("Tables");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            TableId = 1,
                             SeatCount = 4,
                             TableNumber = 1
                         },
                         new
                         {
-                            Id = 2,
+                            TableId = 2,
                             SeatCount = 6,
                             TableNumber = 2
                         },
                         new
                         {
-                            Id = 3,
+                            TableId = 3,
                             SeatCount = 2,
                             TableNumber = 3
                         },
                         new
                         {
-                            Id = 4,
+                            TableId = 4,
                             SeatCount = 8,
                             TableNumber = 4
                         },
                         new
                         {
-                            Id = 5,
+                            TableId = 5,
                             SeatCount = 5,
                             TableNumber = 5
                         });

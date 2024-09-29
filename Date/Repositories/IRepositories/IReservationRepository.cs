@@ -14,6 +14,7 @@ namespace BistroBook.Date.Repositories.IRepositories
         Task<IEnumerable<Reservation>> GetReservationsByDateAsync(DateTime date);
         Task<IEnumerable<Reservation>> GetReservationsByTableIdAsync(int tableId);
         Task<IEnumerable<Reservation>> GetReservationsByCustomerIdAsync(int customerId);
+        Task<IEnumerable<Reservation>> GetReservationsByTableIdAndDateAsync(int tableId, DateTime date);
         Task<IEnumerable<Reservation>> GetReservationsAsync(int tableId, DateTime date, TimeSpan startTime, TimeSpan endTime, int? reservationId = null);
 
         // Update an existing reservation

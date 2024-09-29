@@ -43,7 +43,18 @@ namespace BistroBook.Services
             var tableList = await _tableRepository.GetAllTablesAsync();
             return tableList.Select(t => new TableSummaryDto
             {
-                TableId = t.TableId,
+                Id = t.Id,
+                TableNumber = t.TableNumber,
+                SeatCount = t.SeatCount,
+            }).ToList();
+        }
+
+        public async Task<IEnumerable<TableSummaryDto>> GetAvailableTablesAsync(int guestCount)
+        {
+            var availableTables = await _tableRepository.GetAvailableTablesAsync(guestCount);
+            return availableTables.Select(t => new TableSummaryDto
+            {
+                Id = t.Id,
                 TableNumber = t.TableNumber,
                 SeatCount = t.SeatCount,
             }).ToList();
@@ -60,7 +71,7 @@ namespace BistroBook.Services
 
             return new TableDetailDto
             {
-                TableId = table.TableId,
+                Id = table.Id,
                 TableNumber = table.TableNumber,
                 SeatCount = table.SeatCount,
             };

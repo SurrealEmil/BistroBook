@@ -4,7 +4,7 @@ namespace BistroBook.Model.DTOs.ReservationDTOs
 {
     public class ReservationDetailDto
     {
-        public int ReservationId { get; set; }
+        public int Id { get; set; }
         public int TableId { get; set; }
         public int TableNumber { get; set; }
         public int CustomerId { get; set; }

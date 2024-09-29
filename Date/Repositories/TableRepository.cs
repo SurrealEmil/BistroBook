@@ -34,6 +34,14 @@ namespace BistroBook.Date.Repositories
             return tableList;
         }
 
+        public async Task<IEnumerable<Table>> GetAvailableTablesAsync(int guestCount)
+        {
+            var availableTables = await _context.Tables
+            .Where(t => t.SeatCount >= guestCount)
+            .ToListAsync();
+            return availableTables;
+        }
+
         // Get a table by its ID
         public async Task<Table> GetTableByIdAsync(int tableId)
         {

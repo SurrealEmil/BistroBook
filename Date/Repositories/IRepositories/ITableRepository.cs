@@ -10,6 +10,7 @@ namespace BistroBook.Date.Repositories.IRepositories
         // Read operations
         Task<Table> GetTableByIdAsync(int tableId);
         Task<IEnumerable<Table>> GetAllTablesAsync();
+        Task<IEnumerable<Table>> GetAvailableTablesAsync(int guestCount);
 
         // Update an existing table
         Task UpdateTableAsync(Table table);

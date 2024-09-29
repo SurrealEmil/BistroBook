@@ -7,7 +7,7 @@ namespace BistroBook.Model
     {
         // Primary key
         [Key]
-        public int ReservationId { get; set; }
+        public int Id { get; set; }
 
         // Guest details
         [Required]
