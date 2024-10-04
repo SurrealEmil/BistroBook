@@ -1,6 +1,7 @@
 ﻿using BistroBook.Date.Repositories.IRepositories;
 using BistroBook.Model;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BistroBook.Date.Repositories
 {
@@ -32,6 +33,12 @@ namespace BistroBook.Date.Repositories
         {
             var customerList = await _context.Customers.ToListAsync();
             return customerList;
+        }
+
+        public async Task<Customer> GetCustomerByEmailAsync(string email)
+        {
+            var customerEmail = await _context.Customers.SingleOrDefaultAsync(c => c.Email == email);
+            return customerEmail;
         }
 
         // Get a customer by its ID

@@ -17,7 +17,7 @@ namespace BistroBook.Services.IServices
         Task<IEnumerable<ReservationSummaryDto>> GetReservationsByCustomerIdAsync(int customerId);
 
         // Update an existing reservation
-        Task UpdateReservationAsync(int reservationId, ReservationUpdateDto reservation);
+        Task UpdateReservationAsync(ReservationUpdateDto reservation);
 
         // Delete a reservation
         Task DeleteReservationAsync(int reservationId);

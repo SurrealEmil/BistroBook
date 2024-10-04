@@ -6,7 +6,7 @@ namespace BistroBook.Date.Repositories.IRepositories
     public interface IReservationRepository
     {
         // Create a new reservation
-        Task AddReservationAsync(Reservation reservationDto);
+        Task AddReservationAsync(Reservation reservation);
 
         // Read operations
         Task<Reservation> GetReservationByIdAsync(int reservationId);
@@ -17,10 +17,15 @@ namespace BistroBook.Date.Repositories.IRepositories
         Task<IEnumerable<Reservation>> GetReservationsByTableIdAndDateAsync(int tableId, DateTime date);
         Task<IEnumerable<Reservation>> GetReservationsAsync(int tableId, DateTime date, TimeSpan startTime, TimeSpan endTime, int? reservationId = null);
 
+        Task<bool> IsTableAvailableAsync(int tableId, DateTime date, TimeSpan startTime, TimeSpan endTime, int? reservationIdToIgnore);
+        Task<bool> IsTableAvailableAsync(int tableId, DateTime date, TimeSpan startTime, TimeSpan endTime);
+
         // Update an existing reservation
         Task UpdateReservationAsync(Reservation reservation);
 
         // Delete a reservation
         Task DeleteReservationAsync(Reservation reservation);  
+
+
     }
 }

@@ -2,6 +2,7 @@
 using BistroBook.Model;
 using BistroBook.Model.DTOs.CustomerDTOs;
 using BistroBook.Services.IServices;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BistroBook.Services
 {
@@ -48,6 +49,25 @@ namespace BistroBook.Services
                 LastName = c.LastName,
                 Email = c.Email,
             }).ToList();
+        }
+
+        public async Task<CustomerDetailDto> GetCustomerByEmailAsync(string email)
+        {
+            var existingCustomer = await _customerRepository.GetCustomerByEmailAsync(email);
+            if (existingCustomer == null) 
+            { 
+                return null; 
+            }
+
+            return new CustomerDetailDto
+            {
+                Id = existingCustomer.Id,
+                FirstName = existingCustomer.FirstName,
+                LastName = existingCustomer.LastName,
+                Email = existingCustomer.Email,
+                PhoneNumber = existingCustomer.PhoneNumber,
+            };
+            
         }
 
         // Get a customer by its ID and map to detail DTO

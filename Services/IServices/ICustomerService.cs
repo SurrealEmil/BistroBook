@@ -11,6 +11,7 @@ namespace BistroBook.Services.IServices
         // Read operations
         Task<CustomerDetailDto> GetCustomerByIdAsync(int customerId);
         Task<IEnumerable<CustomerSummaryDto>> GetAllCustomersAsync();
+        Task<CustomerDetailDto> GetCustomerByEmailAsync(string email);
 
         // Update an existing customer
         Task UpdateCustomerAsync(int customerId, CustomerUpdateDto customer);
