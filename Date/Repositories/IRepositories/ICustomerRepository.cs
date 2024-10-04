@@ -10,6 +10,7 @@ namespace BistroBook.Date.Repositories.IRepositories
         // Read operations
         Task<Customer> GetCustomerByIdAsync(int customerId);
         Task<IEnumerable<Customer>> GetAllCustomersAsync();
+        Task<Customer> GetCustomerByEmailAsync(string email);
 
         // Update an existing customer
         Task UpdateCustomerAsync(Customer customer);

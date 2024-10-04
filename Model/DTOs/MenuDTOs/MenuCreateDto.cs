@@ -9,7 +9,7 @@ namespace BistroBook.Model.DTOs.MenuDTOs
         public string DishName { get; set; }
 
         [Required]
-        [StringLength(200, MinimumLength = 10, ErrorMessage = "Description must be between 10 and 200 characters.")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Description must be between 10 and 200 characters.")]
         public string Description { get; set; }
 
         [Required]

@@ -71,7 +71,7 @@ namespace BistroBook.Controllers
         {
             try
             {
-                await _reservationService.UpdateReservationAsync(id, reservation); 
+                await _reservationService.UpdateReservationAsync(reservation); 
             }
             catch (Exception ex)
             {

@@ -2,6 +2,7 @@
 using BistroBook.Model;
 using BistroBook.Model.DTOs.ReservationDTOs;
 using BistroBook.Services.IServices;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BistroBook.Services
 {
@@ -22,26 +23,65 @@ namespace BistroBook.Services
         }
 
         // Add a new reservation
-        public async Task AddReservationAsync(ReservationCreateDto reservationDto)
+        public async Task AddReservationAsync(ReservationCreateDto reservation)
         {
-            // Validate the customer and table
-            await ValidateCustomerAndTableAsync(reservationDto.CustomerId, reservationDto.TableId);
-
-            // Validate guest count and check for conflicts
-            await ValidateReservationDetailsAsync(reservationDto.GuestCount, reservationDto.TableId, reservationDto.Date, reservationDto.StartTime, reservationDto.EndTime);
-
-            // Create and add the reservation
-            var reservation = new Reservation
+            // Check availability of the table
+            var theTable = await _tableRepository.GetTableByIdAsync(reservation.TableId);
+            if (theTable == null)
             {
-                FK_CustomerId = reservationDto.CustomerId,
-                FK_TableId = reservationDto.TableId,
-                GuestCount = reservationDto.GuestCount,
-                Date = reservationDto.Date,
-                StartTime = reservationDto.StartTime,
-                EndTime = reservationDto.EndTime
+                throw new InvalidOperationException($"Table {reservation.TableId} not found!");
+            }
+
+            // Calculate the reservation end time
+            var resEndTime = reservation.StartTime.Add(new TimeSpan(2, 0, 0));
+
+            // Check if the table is busy during the requested time
+            var isTableBusy = await _reservationRepository.IsTableAvailableAsync(reservation.TableId, reservation.Date, reservation.StartTime, resEndTime);
+
+            if (isTableBusy)
+            {
+                throw new InvalidOperationException($"Table {reservation.TableId} is not available at the selected time.");
+            }
+
+            // Error check for number of guests
+            if (reservation.GuestCount < 1 || reservation.GuestCount > 20)
+            {
+                throw new InvalidOperationException($"Guest count must be between 1 and 20.");
+            }
+
+            // Check if the customer already exists, or create a new customer
+            var existingCustomer = await _customerRepository.GetCustomerByEmailAsync(reservation.Email);
+            Customer customer;
+
+            if (existingCustomer == null)
+            {
+                customer = new Customer
+                {
+                    FirstName = reservation.FirstName,
+                    LastName = reservation.LastName,
+                    PhoneNumber = reservation.PhoneNumber,
+                    Email = reservation.Email
+                };
+                await _customerRepository.AddCustomerAsync(customer);
+            }
+            else
+            {
+                customer = existingCustomer;
+            }
+
+            // Create a new reservation
+            var newRes = new Reservation
+            {
+                GuestCount = reservation.GuestCount,
+                Date = reservation.Date,
+                StartTime = reservation.StartTime,
+                EndTime = resEndTime,
+                FK_CustomerId = customer.Id,
+                FK_TableId = reservation.TableId,
             };
 
-            await _reservationRepository.AddReservationAsync(reservation);
+            // Save the booking
+            await _reservationRepository.AddReservationAsync(newRes);
         }
 
         // Delete a reservation by its ID
@@ -163,74 +203,48 @@ namespace BistroBook.Services
         }
 
         // Update an existing reservation by its ID
-        public async Task UpdateReservationAsync(int reservationId, ReservationUpdateDto reservationDto)
+        public async Task UpdateReservationAsync(ReservationUpdateDto reservationDto)
         {
-            // Fetch and validate the existing reservation
-            var existingReservation = await GetExistingReservationAsync(reservationId);
-
-            // Validate the customer and table
-            await ValidateCustomerAndTableAsync(reservationDto.CustomerId, reservationDto.TableId);
-
-            // Validate guest count and check for conflicts
-            await ValidateReservationDetailsAsync(reservationDto.GuestCount, reservationDto.TableId, reservationDto.Date, reservationDto.StartTime, reservationDto.EndTime, reservationId);
-
-            // Update reservation details
-            UpdateReservation(existingReservation, reservationDto);
-
-            await _reservationRepository.UpdateReservationAsync(existingReservation);
-        }
-
-        // Helper methods
-
-        private async Task<Reservation> GetExistingReservationAsync(int reservationId)
-        {
-            var reservation = await _reservationRepository.GetReservationByIdAsync(reservationId);
-            if (reservation == null)
+            // Retrieve the existing reservation
+            var existingReservation = await _reservationRepository.GetReservationByIdAsync(reservationDto.Id);
+            if (existingReservation == null)
             {
-                throw new InvalidOperationException("Reservation was not found.");
-            }
-            return reservation;
-        }
-
-        private async Task ValidateCustomerAndTableAsync(int customerId, int tableId)
-        {
-            var customer = await _customerRepository.GetCustomerByIdAsync(customerId);
-            if (customer == null)
-            {
-                throw new InvalidOperationException("Customer was not found.");
+                throw new InvalidOperationException($"Reservation {reservationDto.Id} not found!");
             }
 
-            var table = await _tableRepository.GetTableByIdAsync(tableId);
-            if (table == null)
+            // Check availability of the table
+            var theTable = await _tableRepository.GetTableByIdAsync(reservationDto.TableId);
+            if (theTable == null)
             {
-                throw new InvalidOperationException("Table was not found.");
-            }
-        }
-
-        private async Task ValidateReservationDetailsAsync(int guestCount, int tableId, DateTime date, TimeSpan startTime, TimeSpan endTime, int? reservationId = null)
-        {
-            var table = await _tableRepository.GetTableByIdAsync(tableId);
-            if (guestCount > table.SeatCount)
-            {
-                throw new ArgumentException("The number of guests exceeds the available seats at the table.");
+                throw new InvalidOperationException($"Table {reservationDto.TableId} not found!");
             }
 
-            var conflictingReservations = await _reservationRepository.GetReservationsAsync(tableId, date, startTime, endTime, reservationId);
-            if (conflictingReservations.Any())
-            {
-                throw new InvalidOperationException("The table is already reserved for the selected time slot.");
-            }
-        }
+            // Calculate the new reservation end time
+            var newEndTime = reservationDto.StartTime.Add(new TimeSpan(2, 0, 0));
 
-        private void UpdateReservation(Reservation existingReservation, ReservationUpdateDto reservationDto)
-        {
-            existingReservation.FK_CustomerId = reservationDto.CustomerId;
-            existingReservation.FK_TableId = reservationDto.TableId;
+            // Check if the table is busy during the requested time
+            var isTableBusy = await _reservationRepository.IsTableAvailableAsync(reservationDto.TableId, reservationDto.Date, reservationDto.StartTime, newEndTime, existingReservation.Id);
+
+            if (isTableBusy)
+            {
+                throw new InvalidOperationException($"Table {reservationDto.TableId} is not available at the selected time.");
+            }
+
+            // Error check for number of guests
+            if (reservationDto.GuestCount < 1 || reservationDto.GuestCount > 20)
+            {
+                throw new InvalidOperationException($"Guest count must be between 1 and 20.");
+            }
+
+            // Update the existing reservation
             existingReservation.GuestCount = reservationDto.GuestCount;
             existingReservation.Date = reservationDto.Date;
             existingReservation.StartTime = reservationDto.StartTime;
-            existingReservation.EndTime = reservationDto.EndTime;
-        }
+            existingReservation.EndTime = newEndTime; // Set the new end time
+            existingReservation.FK_TableId = reservationDto.TableId;
 
+            // Save the changes
+            await _reservationRepository.UpdateReservationAsync(existingReservation);
+        }
     }
 }

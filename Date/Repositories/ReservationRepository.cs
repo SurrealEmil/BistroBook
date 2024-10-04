@@ -92,6 +92,25 @@ namespace BistroBook.Date.Repositories
             return reservationTable;
         }
 
+        public async Task<bool> IsTableAvailableAsync(int tableId, DateTime date, TimeSpan startTime, TimeSpan endTime, int? reservationIdToIgnore)
+        {
+            return await _context.Reservations
+                    .AnyAsync(r => r.FK_TableId == tableId &&
+                                   r.Date == date &&
+                                   r.Id != reservationIdToIgnore &&
+                                   r.StartTime < endTime &&
+                                   r.EndTime > startTime);
+        }
+
+        public async Task<bool> IsTableAvailableAsync(int tableId, DateTime date, TimeSpan startTime, TimeSpan endTime)
+        {
+            return await _context.Reservations
+                    .AnyAsync(r => r.FK_TableId == tableId &&
+                                   r.Date == date &&
+                                   r.StartTime < endTime &&
+                                   r.EndTime > startTime);
+        }
+
         // Update an existing reservation
         public async Task UpdateReservationAsync(Reservation reservation)
         {

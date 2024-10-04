@@ -5,14 +5,14 @@ namespace BistroBook.Model.DTOs.ReservationDTOs
 {
     public class ReservationUpdateDto
     {
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         public int TableId { get; set; }
 
         [Required]
-        public int CustomerId { get; set; }
-
-        [Required]
-        [Range(1, 100, ErrorMessage = "Guest count must be between 1 and 100.")]
+        [Range(1, 20, ErrorMessage = "Guest count must be between 1 and 20.")]
         public int GuestCount { get; set; }
 
         [Required]
@@ -22,9 +22,5 @@ namespace BistroBook.Model.DTOs.ReservationDTOs
         [Required]
         [DataType(DataType.Time)]
         public TimeSpan StartTime { get; set; }
-
-        [Required]
-        [DataType(DataType.Time)]
-        public TimeSpan EndTime { get; set; }
     }
 }
