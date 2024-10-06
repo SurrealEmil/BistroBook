@@ -27,6 +27,12 @@ namespace BistroBook.Date.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<Menu>> GetAllAvailableMenuDishesAsync()
+        {
+            var menuAvailable = await _context.Menus.Where(menu => menu.IsAvailable).ToListAsync();
+            return menuAvailable;
+        }
+
         // Get all favorite dishes
         public async Task<IEnumerable<Menu>> GetAllFavoriteMenuDishesAsync()
         {

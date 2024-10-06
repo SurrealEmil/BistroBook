@@ -40,6 +40,20 @@ namespace BistroBook.Services
             await _menuRepository.DeleteDishAsync(menu);
         }
 
+        public async Task<IEnumerable<MenuDetailDto>> GetAllAvailableMenuDishesAsync()
+        {
+            var menuAvailabl = await _menuRepository.GetAllAvailableMenuDishesAsync();
+            return menuAvailabl.Select(m => new MenuDetailDto
+            {
+                Id = m.Id,
+                DishName = m.DishName,
+                Description = m.Description,
+                Price = m.Price,
+                IsFavorite = m.IsFavorite,
+                IsAvailable = m.IsAvailable,
+            }).ToList();
+        }
+
         public async Task<IEnumerable<MenuDetailDto>> GetAllFavoriteMenuDishesAsync()
         {
             var menuFavorit = await _menuRepository.GetAllFavoriteMenuDishesAsync();
