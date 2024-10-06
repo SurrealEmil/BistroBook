@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using BistroBook.Model.DTOs.MenuDTOs;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BistroBook.Controllers
 {
@@ -35,7 +36,22 @@ namespace BistroBook.Controllers
             return Ok(menuList);
         }
 
-        // Get /api/Menus/GetAllMenuDishes
+        // Get /api/Menus/GetAllAvailableMenuDishes
+        [HttpGet]
+        [Route("GetAllAvailableMenuDishes")]
+        public async Task<ActionResult<IEnumerable<MenuDetailDto>>> GetAllAvailableMenuDishes()
+        {
+            var menuAvailable = await _menuService.GetAllAvailableMenuDishesAsync();
+
+            if (menuAvailable.IsNullOrEmpty())
+            {
+                return NotFound("No dish found.");
+            }
+
+            return Ok(menuAvailable);
+        }
+
+        // Get /api/Menus/GetAllFavoriteMenuDishes
         [HttpGet]
         [Route("GetAllFavoriteMenuDishes")]
         public async Task<ActionResult<IEnumerable<MenuDetailDto>>> GetAllFavoriteMenuDishes()

@@ -36,7 +36,7 @@ namespace BistroBook.Controllers
 
         // Get /api/Tables/GetAvailableTables
         [HttpGet]
-        [Route("GetAvailableTables{guestCount}")]
+        [Route("GetAvailableTables/{guestCount}")]
         public async Task<ActionResult<IEnumerable<TableSummaryDto>>> GetAvailableTables(int guestCount)
         {
             var availableTables = await _tableService.GetAvailableTablesAsync(guestCount);

@@ -12,6 +12,7 @@ namespace BistroBook.Services.IServices
         Task<MenuDetailDto> GetDishByIdAsync(int menuId);
         Task<IEnumerable<MenuSummaryDto>> GetAllMenuDishesAsync();
         Task<IEnumerable<MenuDetailDto>> GetAllFavoriteMenuDishesAsync();
+        Task<IEnumerable<MenuDetailDto>> GetAllAvailableMenuDishesAsync();
 
         // Update an existing dish
         Task UpdateMenuAsync(int menuId, MenuUpdateDto menu);
